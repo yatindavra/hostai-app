@@ -92,7 +92,7 @@
 
       function sendAudioRequest(action) {
         audioAction = action;
-        fetch("http://127.0.0.1:5000/health-insurance", {
+        fetch("https://hostai-app.onrender.com/health-insurance", {
           method: "POST",
           body: JSON.stringify({ action: action, voice: voicedropdown.value }),
           headers: {
@@ -143,7 +143,7 @@
 
       function sendUserResponse(response) {
         audioAction = "receive_response";
-        fetch("http://127.0.0.1:5000/health-insurance", {
+        fetch("https://hostai-app.onrender.com/health-insurance", {
           method: "POST",
           body: JSON.stringify({
             action: "receive_response",
@@ -184,7 +184,7 @@
 
       function sendenqiryAudioRequest(action) {
         audioAction = action;
-        fetch("http://127.0.0.1:5000/enquiry", {
+        fetch("https://hostai-app.onrender.com/enquiry", {
           method: "POST",
           body: JSON.stringify({ action: action, voice: voicedropdown.value }),
           headers: {
@@ -235,7 +235,7 @@
 
       function sendUserResponseEnquiry(response) {
         audioAction = "receive_enquiry_response";
-        fetch("http://127.0.0.1:5000/enquiry", {
+        fetch("https://hostai-app.onrender.com/enquiry", {
           method: "POST",
           body: JSON.stringify({
             action: "receive_enquiry_response",
@@ -276,7 +276,7 @@
 
       function sendCallRequest(action) {
         audioAction = action;
-        fetch("http://127.0.0.1:5000/callUser", {
+        fetch("https://hostai-app.onrender.com/callUser", {
           method: "POST",
           body: JSON.stringify({ action: action, voice: voicedropdown.value }),
           headers: {
@@ -326,7 +326,7 @@
       }
       function sendUserResponseCall(response) {
         audioAction = "recieve_call_response";
-        fetch("http://127.0.0.1:5000/callUser", {
+        fetch("https://hostai-app.onrender.com/callUser", {
           method: "POST",
           body: JSON.stringify({
             action: "recieve_call_response",

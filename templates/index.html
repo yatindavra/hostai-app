@@ -92,7 +92,7 @@
 
       function sendAudioRequest(action) {
         audioAction = action;
-        fetch("https://hosting-helath-insurance.onrender.com/health-insurance", {
+        fetch("http://127.0.0.1:5000/health-insurance", {
           method: "POST",
           body: JSON.stringify({ action: action, voice: voicedropdown.value }),
           headers: {
@@ -143,7 +143,7 @@
 
       function sendUserResponse(response) {
         audioAction = "receive_response";
-        fetch("https://hosting-helath-insurance.onrender.com/health-insurance", {
+        fetch("http://127.0.0.1:5000/health-insurance", {
           method: "POST",
           body: JSON.stringify({
             action: "receive_response",
@@ -184,7 +184,7 @@
 
       function sendenqiryAudioRequest(action) {
         audioAction = action;
-        fetch("https://hosting-helath-insurance.onrender.com/enquiry", {
+        fetch("http://127.0.0.1:5000/enquiry", {
           method: "POST",
           body: JSON.stringify({ action: action, voice: voicedropdown.value }),
           headers: {
@@ -235,7 +235,7 @@
 
       function sendUserResponseEnquiry(response) {
         audioAction = "receive_enquiry_response";
-        fetch("https://hosting-helath-insurance.onrender.com/enquiry", {
+        fetch("http://127.0.0.1:5000/enquiry", {
           method: "POST",
           body: JSON.stringify({
             action: "receive_enquiry_response",
@@ -276,7 +276,7 @@
 
       function sendCallRequest(action) {
         audioAction = action;
-        fetch("https://hosting-helath-insurance.onrender.com/callUser", {
+        fetch("http://127.0.0.1:5000/callUser", {
           method: "POST",
           body: JSON.stringify({ action: action, voice: voicedropdown.value }),
           headers: {
@@ -326,7 +326,7 @@
       }
       function sendUserResponseCall(response) {
         audioAction = "recieve_call_response";
-        fetch("https://hosting-helath-insurance.onrender.com/callUser", {
+        fetch("http://127.0.0.1:5000/callUser", {
           method: "POST",
           body: JSON.stringify({
             action: "recieve_call_response",

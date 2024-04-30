@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Insurance Planning system</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Health Insurance Plan</h1>
+      <div class="button-dropdown-container">
+        <button id="startRecognition">I want to buy health insurance</button>
+        <button id="enquiry">Enquiry</button>
+        <button id="callUser">Call User</button>
+        <select id="voicedropdown">
+          <option value="" hidden selected>Select Voice</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+      <audio id="audioplayer"></audio>
+      <div id="transcriptBox"></div>
+      <div id="transcriptList"></div>
+    </div>
+
+    <script>
+      const startRecognition = document.getElementById("startRecognition");
+      const enquiry = document.getElementById("enquiry");
+      const callUser = document.getElementById("callUser");
+      const audioplayer = document.getElementById("audioplayer");
+      const transcriptBox = document.getElementById("transcriptBox");
+      const transcriptList = document.getElementById("transcriptList");
+      const voicedropdown = document.getElementById("voicedropdown");
+      let guid = "";
+      let recognition;
+      let recognitionStopped = false;
+      let isListening = false;
+      let audioAction;
+      let tag;
+
+      startRecognition.addEventListener("click", function () {
+        if (!voicedropdown.value) {
+          alert("Please select Voice first");
+          return;
+        }
+        guid = uuidv4();
+        sendAudioRequest("send_audio");
+        startRecognition.disabled = true;
+        enquiry.disabled = true;
+        callUser.disabled = true;
+        voicedropdown.disabled = true;
+        recognitionStopped = false;
+      });
+
+      enquiry.addEventListener("click", function () {
+        if (!voicedropdown.value) {
+          alert("Please select Voice first");
+          return;
+        }
+        guid = uuidv4();
+        sendenqiryAudioRequest("send_enquiry_audio");
+        startRecognition.disabled = true;
+        enquiry.disabled = true;
+        callUser.disabled = true;
+        voicedropdown.disabled = true;
+        recognitionStopped = false;
+      });
+
+      callUser.addEventListener("click", function () {
+        if (!voicedropdown.value) {
+          alert("Please select Voice first");
+          return;
+        }
+        guid = uuidv4();
+        sendCallRequest("send_call_audio");
+        startRecognition.disabled = true;
+        enquiry.disabled = true;
+        callUser.disabled = true;
+        voicedropdown.disabled = true;
+        recognitionStopped = false;
+      });
+
+      function uuidv4() {
+        return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) =>
+          (
+            +c ^
+            (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
+          ).toString(16)
+        );
+      }
+
+      function sendAudioRequest(action) {
+        audioAction = action;
+        fetch("https://hosting-helath-insurance.onrender.com/health-insurance", {
+          method: "POST",
+          body: JSON.stringify({ action: action, voice: voicedropdown.value }),
+          headers: {
+            "Content-Type": "application/json",
+            "X-GUID": guid,
+          },
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            audioplayer.src = `data:audio/wav;base64,${data.audio_data}`;
+            audioplayer.play();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      function startSpeechRecognition() {
+        if (recognitionStopped) return;
+        recognition = new webkitSpeechRecognition();
+        recognition.lang = "en-US";
+
+        recognition.onstart = function () {
+          isListening = true;
+        };
+
+        let resultReceived = false;
+        recognition.onresult = function (event) {
+          resultReceived = true;
+          const transcript = event.results[0][0].transcript;
+          appendTranscriptToList(transcript);
+          sendUserResponse(transcript);
+        };
+
+        recognition.onend = function () {
+          if (!resultReceived) {
+            isListening = false;
+            if (!recognitionStopped) {
+              sendUserResponse("");
+            }
+          }
+        };
+
+        recognition.start();
+      }
+
+      function sendUserResponse(response) {
+        audioAction = "receive_response";
+        fetch("https://hosting-helath-insurance.onrender.com/health-insurance", {
+          method: "POST",
+          body: JSON.stringify({
+            action: "receive_response",
+            response: response,
+            voice: voicedropdown.value,
+          }), 
+          headers: {
+            "Content-Type": "application/json",
+            "X-GUID": guid,
+          },
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            audioplayer.src = `data:audio/wav;base64,${data.audio_data}`;
+            audioplayer.play();
+            if (
+              data.filename == "terminate.wav" ||
+              data.filename == "thankyou.wav"
+            ) {
+              console.log(
+                "Termination signal received. Stopping further interactions."
+              );
+              recognition.stop();
+              recognitionStopped = true;
+              startRecognition.disabled = false;
+              enquiry.disabled = false;
+              callUser.disabled = false;
+              voicedropdown.disabled = false;
+              voicedropdown.value = "";
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      function sendenqiryAudioRequest(action) {
+        audioAction = action;
+        fetch("https://hosting-helath-insurance.onrender.com/enquiry", {
+          method: "POST",
+          body: JSON.stringify({ action: action, voice: voicedropdown.value }),
+          headers: {
+            "Content-Type": "application/json",
+            "X-GUID": guid,
+          },
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            audioplayer.src = `data:audio/wav;base64,${data.audio_data}`;
+            audioplayer.play();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      function startEnquirySpeechRecognition() {
+        if (recognitionStopped) return;
+        recognition = new webkitSpeechRecognition();
+        recognition.lang = "en-US";
+
+        recognition.onstart = function () {
+          isListening = true;
+        };
+
+        let resultReceived = false;
+        recognition.onresult = function (event) {
+          resultReceived = true;
+          const transcript = event.results[0][0].transcript;
+          appendTranscriptToList(transcript);
+          sendUserResponseEnquiry(transcript);
+        };
+
+        recognition.onend = function () {
+          if (!resultReceived) {
+            isListening = false;
+            if (!recognitionStopped) {
+              sendUserResponseEnquiry("");
+            }
+          }
+        };
+
+        recognition.start();
+      }
+
+      function sendUserResponseEnquiry(response) {
+        audioAction = "receive_enquiry_response";
+        fetch("https://hosting-helath-insurance.onrender.com/enquiry", {
+          method: "POST",
+          body: JSON.stringify({
+            action: "receive_enquiry_response",
+            response: response,
+            voice: voicedropdown.value,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            "X-GUID": guid,
+          },
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            audioplayer.src = `data:audio/wav;base64,${data.audio_data}`;
+            audioplayer.play();
+            if (
+              data.filename == "terminate.wav" ||
+              data.filename == "thankyou.wav"
+            ) {
+              console.log(
+                "Termination signal received. Stopping further interactions."
+              );
+              recognition.stop();
+              recognitionStopped = true;
+              startRecognition.disabled = false;
+              enquiry.disabled = false;
+              callUser.disabled = false;
+              voicedropdown.disabled = false;
+              voicedropdown.value = "";
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      function sendCallRequest(action) {
+        audioAction = action;
+        fetch("https://hosting-helath-insurance.onrender.com/callUser", {
+          method: "POST",
+          body: JSON.stringify({ action: action, voice: voicedropdown.value }),
+          headers: {
+            "Content-Type": "application/json",
+            "X-GUID": guid,
+          },
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            audioplayer.src = `data:audio/wav;base64,${data.audio_data}`;
+            audioplayer.play();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      function startCallSpeechRecognition() {
+        if (recognitionStopped) return;
+        recognition = new webkitSpeechRecognition();
+        recognition.lang = "en-US";
+
+        recognition.onstart = function () {
+          isListening = true;
+        };
+
+        let resultReceived = false;
+        recognition.onresult = function (event) {
+          resultReceived = true;
+          const transcript = event.results[0][0].transcript;
+          appendTranscriptToList(transcript);
+          sendUserResponseCall(transcript);
+        };
+
+        recognition.onend = function () {
+          if (!resultReceived) {
+            isListening = false;
+            if (!recognitionStopped) {
+              sendUserResponseCall("");
+            }
+          }
+        };
+
+        recognition.start();
+      }
+      function sendUserResponseCall(response) {
+        audioAction = "recieve_call_response";
+        fetch("https://hosting-helath-insurance.onrender.com/callUser", {
+          method: "POST",
+          body: JSON.stringify({
+            action: "recieve_call_response",
+            response: response,
+            voice: voicedropdown.value,
+            tag: tag ? tag : null,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            "X-GUID": guid,
+          },
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            audioplayer.src = `data:audio/wav;base64,${data.audio_data}`;
+            audioplayer.play();
+            tag = data?.tag;
+            if (
+              data.filename == "terminate.wav" ||
+              data.filename == "thankyou.wav" ||
+              data.filename == "schedule.wav"
+            ) {
+              console.log(
+                "Termination signal received. Stopping further interactions."
+              );
+              recognition.stop();
+              recognitionStopped = true;
+              startRecognition.disabled = false;
+              enquiry.disabled = false;
+              callUser.disabled = false;
+              voicedropdown.disabled = false;
+              voicedropdown.value = "";
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      function appendTranscriptToList(transcript) {
+        const listItem = document.createElement("div");
+        listItem.textContent = "user: " + transcript;
+        transcriptList.appendChild(listItem);
+      }
+
+      audioplayer.addEventListener("ended", () => {
+        if (!recognitionStopped) {
+          if (
+            audioAction === "send_audio" ||
+            audioAction === "receive_response"
+          ) {
+            startSpeechRecognition();
+          } else if (
+            audioAction === "send_enquiry_audio" ||
+            audioAction === "receive_enquiry_response"
+          ) {
+            startEnquirySpeechRecognition();
+          } else if (
+            audioAction === "send_call_audio" ||
+            audioAction === "recieve_call_response"
+          ) {
+            startCallSpeechRecognition();
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+flask
+gunicorn
+pvorca
+sentence_transformers
+pymongo
+transformers
+flask_cors
+pandas
+scikit-learn

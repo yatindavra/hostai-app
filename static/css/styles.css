@@ -1,0 +1,134 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: lightblue;
+  }
+  
+  .container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  button {
+    display: block;
+    width: auto;
+    padding: 10px 20px;
+    background-color: #008080;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  
+  button:not([disabled]):hover {
+    background-color: #004d4d;
+    transform: scale(1.05);
+  }
+  
+  #transcriptBox {
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  #transcriptList div {
+    margin-bottom: 5px;
+    text-align: center;
+  }
+  
+  
+  #audioplayer {
+    display: none;
+  }
+  
+  .button-dropdown-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  /* Style button */
+  #startRecognition {
+    padding: 10px 20px;
+    background-color: #008080;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  #startRecognition:not([disabled]):hover {
+    background-color: #004d4d;
+    transform: scale(1.05);
+  }
+  
+  #voicedropdown {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+  
+  #voicedropdown:focus {
+    outline: none;
+    border-color: #008080;
+  }
+  
+  #voicedropdown::after {
+    content: '\25BC';  
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+  }
+  
+  #voicedropdown:hover {
+    border-color: #008080;
+  }
+  
+  #voicedropdown:focus + ::after {
+    color: #008080;
+  }
+  
+  /* Style for the "Create New Enquiry" button */
+  #enquiry {
+    padding: 10px 20px;
+    background-color: #008080;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  #enquiry:not([disabled]):hover {
+    background-color: #004d4d;
+    transform: scale(1.05);
+  }
+  

@@ -1,0 +1,90 @@
+[
+  {
+    "que_id": "1",
+    "question": "Welcome to our Health Insurance Planning System! To ensure I provide you with the best health insurance plan, I'll need some information. Your privacy is important, and all your information will be handled confidentially. Let's get started!.Firstly what is your name?",
+    "vaidation_message": "Please Provide valid name",
+    "validation": ["text"],
+    "tag":"name",
+    "trial":0
+  },
+  {
+    "que_id": "2",
+    "question": "Okay Now, age, the age is a crucial factor in tailoring the best health insurance plan for you.Can you please tell me what is your age?",
+    "vaidation_message": "Sorry, I couldn't understand. Please provide a valid numeric value.",
+    "validation": ["number"],
+    "tag":"age",
+    "trial":0
+  },
+  {
+    "que_id": "3",
+    "question": "Great, thank you. Now, could you share your current weight in pounds?",
+    "vaidation_message": "Sorry, I couldn't understand. Please provide a valid numeric value.",
+    "validation": ["number"],
+    "tag":"weight",
+    "trial":0
+  },
+  {
+    "que_id": "4",
+    "question": "Perfect. Next, can you tell me the city where you currently reside?",
+    "vaidation_message": "Can't understand. Please say valid city name.",
+    "validation": ["city"],
+    "tag":"city",
+    "trial":0
+  },
+  {
+    "que_id": "5",
+    "question": "Excellent. And what is your gender?",
+    "vaidation_message": "Can't understand. Please provide valid gender (male or female).",
+    "validation": ["gender"],
+    "tag":"gender",
+    "trial":0
+  },
+  {
+    "que_id": "6",
+    "question": "Thank you. Now, could you share a bit about your occupation or job?",
+    "vaidation_message": "Can't understand. Please provide a valid job title.",
+    "validation": ["job"],
+    "tag":"job",
+    "trial":0
+  },
+  {
+    "que_id": "7",
+    "question": "Great to know. Moving on, could you please share the number of family members you'd like to include in the plan?",
+    "vaidation_message": "Sorry, I couldn't understand. Please provide a valid numeric value.",
+    "validation": ["number"],
+    "tag":"members",
+    "trial":0
+  },
+  {
+    "que_id": "8",
+    "question": "Perfect. Now, are there any hereditary diseases or medical conditions that run in your family that we should be aware of?",
+    "vaidation_message": "Sorry, I couldn't understand. Please Provide valid hearditary dieces",
+    "validation": ["hearditary_dieces"],
+    "tag":"dieces",
+    "trial":0
+  },
+  {
+    "que_id": "9",
+    "question": "Thank you for providing that information. Next, do you smoke?please say yes or no",
+    "vaidation_message": "Can't understand. Please say 'yes' or 'no'.",
+    "validation": ["binary"],
+    "tag":"smoke",
+    "trial":0
+  },
+  {
+    "que_id": "10",
+    "question": "Now, could you please share your blood pressure levels in digits?",
+    "vaidation_message": "Sorry, I couldn't understand. Please provide a valid numeric value.",
+    "validation": ["number"],
+    "tag":"bp",
+    "trial":0
+  },
+  {
+    "que_id": "11",
+    "question": "Thank you for sharing that. Lastly, do you engage in regular exercise?please say yes or no",
+    "vaidation_message": "Can't understand. Please say 'yes' or 'no'.",
+    "validation": ["binary"],
+    "tag":"exercise",
+    "trial":0
+  }
+]
